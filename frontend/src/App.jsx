@@ -4,18 +4,20 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CreateTicket from './pages/CreateTicket';
 import TicketDetail from './pages/TicketDetail';
+import TrackTicket from './pages/TrackTicket'; // Naya import kiya
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Default route '/' ko seedhe login page par redirect kar diya */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Default redirect to Track / Create Ticket */}
+        <Route path="/" element={<Navigate to="/track" replace />} />
 
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/create-ticket" element={<CreateTicket />} />
+        <Route path="/track" element={<TrackTicket />} /> {/* Naya Route */}
 
         {/* Protected Routes (Admin Panel) */}
         <Route 
@@ -35,8 +37,7 @@ function App() {
           } 
         />
 
-        {/* Galat URL daalne par seedhe login page par le jao */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/track" replace />} />
       </Routes>
     </Router>
   );

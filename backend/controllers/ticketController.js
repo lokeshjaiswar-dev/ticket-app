@@ -29,13 +29,18 @@ exports.createTicket = async (req, res) => {
 
     await newTicket.save();
 
-    // Send Brevo Email
-    await sendEmail(
-      customer_email,
-      customer_name,
-      `Ticket Created: ${ticket_id}`,
-      `<h3>Hi ${customer_name},</h3><p>Your ticket has been logged successfully!</p><p><b>Ticket ID:</b> ${ticket_id}</p><p><b>Subject:</b> ${subject}</p>`
-    );
+// Is block ko search karke replace kar do:
+await sendEmail(
+  customer_email,
+  customer_name,
+  `Ticket Created: ${ticket_id}`,
+  `<h3>Hi ${customer_name},</h3>
+   <p>Your ticket has been logged successfully!</p>
+   <p><b>Ticket ID:</b> ${ticket_id}</p>
+   <p><b>Subject:</b> ${subject}</p>
+   <p>We are reviewing your request and will get back to you soon.</p>`,
+  ticket_id // <-- Ticket ID yahan pass kar diya
+);
 
     res.status(201).json(newTicket);
   } catch (err) {
@@ -113,18 +118,19 @@ exports.updateTicket = async (req, res) => {
     // Get updated status details to send in email
     const currentTicket = await Ticket.findOne({ ticket_id: req.params.ticket_id }).populate('status');
 
-    // Email trigger on update
-    if (statusUpdated || noteAdded) {
-      await sendEmail(
-        ticket.customer_email,
-        ticket.customer_name,
-        `Update on your Ticket: ${ticket.ticket_id}`,
-        `<h3>Hi ${ticket.customer_name},</h3>
-         <p>Your ticket <b>${ticket.ticket_id}</b> has been updated.</p>
-         <p><b>Current Status:</b> ${currentTicket.status.label}</p>
-         ${notes ? `<p><b>New Remark:</b> ${notes}</p>` : ''}`
-      );
-    }
+// Is block ko search karke replace kar do:
+if (statusUpdated || noteAdded) {
+  await sendEmail(
+    ticket.customer_email,
+    ticket.customer_name,
+    `Update on your Ticket: ${ticket.ticket_id}`,
+    `<h3>Hi ${ticket.customer_name},</h3>
+     <p>Your ticket <b>${ticket.ticket_id}</b> has been updated by our team.</p>
+     <p><b>Current Status:</b> ${currentTicket.status.label}</p>
+     ${notes ? `<p><b>New Remark:</b> ${notes}</p>` : ''}`,
+    ticket.ticket_id // <-- Ticket ID yahan bhi pass kar diya
+  );
+}
 
     res.json({ success: true, updated_at: new Date() });
   } catch (err) {
