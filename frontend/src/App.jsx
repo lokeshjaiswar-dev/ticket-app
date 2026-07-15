@@ -10,8 +10,14 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Default route '/' ko seedhe login page par redirect kar diya */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/create-ticket" element={<CreateTicket />} />
+
+        {/* Protected Routes (Admin Panel) */}
         <Route 
           path="/dashboard" 
           element={
@@ -28,7 +34,9 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="*" element={<Navigate to="/create-ticket" replace />} />
+
+        {/* Galat URL daalne par seedhe login page par le jao */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );

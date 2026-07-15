@@ -8,11 +8,15 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Pre-save middleware to hash dynamic passwords
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
+UserSchema.pre('save', async function () {
+  if (!this.isModified('password')) return;
+  
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
+
+// mongodb: luckyjaiswar14@gmail.com
+// cloudinary: evilxydon@gmail.com
+// brevo: evilxydon@gmail.com
 
 module.exports = mongoose.model('User', UserSchema);

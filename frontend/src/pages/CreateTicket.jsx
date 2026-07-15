@@ -2,26 +2,30 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const CreateTicket = () => {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', description: '' });
+  const [customerName, setCustomerName] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [status, setStatus] = useState({ type: '', msg: '' });
+  const [message, setMessage] = useState('');
 
-  const handleInputChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
+  // 1. Cloudinary upload function jo tumhara Unsigned Preset use karega
   const uploadToCloudinary = async () => {
     if (!file) return { url: null, type: null };
     
     setUploading(true);
     const data = new FormData();
     data.append("file", file);
-    data.append("upload_preset", "datastraw_crm"); // Replace with actual preset
+    
+    // Hamara banaya hua preset name
+    data.append("upload_preset", "datastraw_crm"); 
+    
     const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
 
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/${resourceType}/upload`, {
+      // Yahan "yahan_apna_cloud_name_likho" ko badalkar apna actual cloud name daalna hai
+      const res = await fetch(`https://api.cloudinary.com/v1_1/dn8xnitiw/${resourceType}/upload`, {
         method: "POST",
         body: data
       });
@@ -30,73 +34,72 @@ const CreateTicket = () => {
       return { url: fileData.secure_url, type: resourceType };
     } catch (err) {
       setUploading(false);
+      console.error("Cloudinary error: ", err);
       throw new Error("File upload failed to Cloudinary");
     }
   };
 
+  // 2. Submit handler jo upload complete hone ke baad details backend ko bhejega
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus({ type: '', msg: '' });
     try {
-      let mediaDetails = { url: null, type: null };
+      let mediaData = { url: null, type: null };
       if (file) {
-        mediaDetails = await uploadToCloudinary();
+        mediaData = await uploadToCloudinary();
       }
 
-      await axios.post('http://localhost:5000/api/tickets', {
-        customer_name: form.name,
-        customer_email: form.email,
-        subject: form.subject,
-        description: form.description,
-        media_url: mediaDetails.url,
-        media_type: mediaDetails.type
-      });
+      const payload = {
+        customer_name: customerName,
+        customer_email: customerEmail,
+        subject,
+        description,
+        media_url: mediaData.url,
+        media_type: mediaData.type
+      };
 
-      setStatus({ type: 'success', msg: 'Your support ticket has been created and logged successfully!' });
-      setForm({ name: '', email: '', subject: '', description: '' });
+      const res = await axios.post('http://localhost:5000/api/tickets', payload);
+      setMessage(`Ticket generated successfully! ID: ${res.data.ticket_id}`);
+      
+      // Reset Form
+      setCustomerName('');
+      setCustomerEmail('');
+      setSubject('');
+      setDescription('');
       setFile(null);
     } catch (err) {
-      setStatus({ type: 'error', msg: err.message || 'Something went wrong.' });
+      setMessage(err.response?.data?.message || 'Something went wrong');
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg p-8 border border-slate-100">
-        <h2 className="text-3xl font-extrabold text-slate-800 text-center mb-2">Create Support Ticket</h2>
-        <p className="text-slate-500 text-center mb-8 text-sm">Please fill out this form to submit your issues or feedback.</p>
-
-        {status.msg && (
-          <div className={`p-4 rounded-lg mb-6 border text-sm ${status.type === 'success' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-red-50 text-red-700 border-red-100'}`}>
-            {status.msg}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Your Name</label>
-              <input type="text" name="name" value={form.name} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
-              <input type="email" name="email" value={form.email} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
+      <div className="max-w-xl w-full bg-white rounded-xl shadow-md p-8 border border-slate-100">
+        <h2 className="text-2xl font-bold text-slate-800 mb-6">Create Support Ticket</h2>
+        {message && <div className="p-3 bg-blue-50 text-blue-700 rounded-lg text-sm mb-4 border border-blue-100">{message}</div>}
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-slate-600 mb-1">Your Name</label>
+            <input type="text" className="w-full px-4 py-2 border border-slate-200 rounded-lg" value={customerName} onChange={(e) => setCustomerName(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Subject</label>
-            <input type="text" name="subject" value={form.subject} onChange={handleInputChange} className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+            <label className="block text-sm font-semibold text-slate-600 mb-1">Email Address</label>
+            <input type="email" className="w-full px-4 py-2 border border-slate-200 rounded-lg" value={customerEmail} onChange={(e) => setCustomerEmail(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Detailed Description</label>
-            <textarea name="description" value={form.description} onChange={handleInputChange} rows="4" className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+            <label className="block text-sm font-semibold text-slate-600 mb-1">Subject</label>
+            <input type="text" className="w-full px-4 py-2 border border-slate-200 rounded-lg" value={subject} onChange={(e) => setSubject(e.target.value)} required />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1">Attachment (Image or Video)</label>
-            <input type="file" accept="image/*,video/*" onChange={(e) => setFile(e.target.files[0])} className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+            <label className="block text-sm font-semibold text-slate-600 mb-1">Description</label>
+            <textarea className="w-full px-4 py-2 border border-slate-200 rounded-lg" rows="4" value={description} onChange={(e) => setDescription(e.target.value)} required></textarea>
           </div>
-          <button type="submit" disabled={uploading} className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition disabled:opacity-50">
-            {uploading ? 'Uploading Attachment...' : 'Submit Support Ticket'}
+          <div>
+            <label className="block text-sm font-semibold text-slate-600 mb-1">Attachment (Image or Video)</label>
+            <input type="file" accept="image/*,video/*" className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" onChange={(e) => setFile(e.target.files[0])} />
+          </div>
+          <button type="submit" disabled={uploading} className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-blue-400">
+            {uploading ? 'Uploading Attachment...' : 'Submit Ticket'}
           </button>
         </form>
       </div>
