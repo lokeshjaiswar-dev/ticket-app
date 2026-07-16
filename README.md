@@ -46,7 +46,7 @@ A clean, production-grade **Support Ticket Management System** integrated with C
 
 https://crm-ticket-app.vercel.app/create-ticket
 
-### 🎥 Video Demo & Setup Guide
+### 🎥 Video Demo
 
 https://drive.google.com/file/d/1DxzI0X2ThPf9m9gXP6TiQlamzhxh4_vy/view?usp=drive_link
 
