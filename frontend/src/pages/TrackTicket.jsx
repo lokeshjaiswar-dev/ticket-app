@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import API from '../api'; // Centralized Axios instance use kar rahe hain
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const TrackTicket = () => {
@@ -11,7 +11,7 @@ const TrackTicket = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to search/track ticket
+  // Function to search/track ticket using dynamic API configuration
   const fetchTicketDetails = async (idToTrack) => {
     setLoading(true);
     setError('');
@@ -19,7 +19,8 @@ const TrackTicket = () => {
     setNotes([]);
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/tickets/${idToTrack.toUpperCase().trim()}`);
+      // Dynamic request: backend url api.js se inherit hoga
+      const res = await API.get(`/tickets/${idToTrack.toUpperCase().trim()}`);
       setTicketData(res.data.ticket);
       setNotes(res.data.notes);
     } catch (err) {
@@ -29,13 +30,13 @@ const TrackTicket = () => {
     }
   };
 
-  // URL se query parameter '?id=TKT-XXXX' automatic read karne ke liye
+  // URL query parameter (?id=TKT-XXXX) automatic detect karne ke liye
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const idFromUrl = params.get('id');
     if (idFromUrl) {
       setTicketId(idFromUrl);
-      fetchTicketDetails(idFromUrl); // Automatic fetch direct link click par!
+      fetchTicketDetails(idFromUrl); 
     }
   }, [location.search]);
 
@@ -47,7 +48,7 @@ const TrackTicket = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4">
-      {/* Header Buttons */}
+      {/* Header Navigation */}
       <div className="w-full max-w-2xl flex justify-between mb-8">
         <button 
           onClick={() => navigate('/create-ticket')} 
@@ -92,7 +93,7 @@ const TrackTicket = () => {
           </div>
         )}
 
-        {/* Ticket Details Display */}
+        {/* Ticket Details Panel */}
         {ticketData && (
           <div className="space-y-6 border-t border-slate-100 pt-6">
             <div className="flex justify-between items-start flex-wrap gap-2">
@@ -129,7 +130,7 @@ const TrackTicket = () => {
               </p>
             </div>
 
-            {/* Media Attachment Show Case */}
+            {/* Media Showcase */}
             {ticketData.media_url && (
               <div>
                 <p className="text-sm font-semibold text-slate-500 mb-2">Your Attachment:</p>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import API from '../api'; // Change 1: Humara centralized dynamic Axios instance
 
 const CreateTicket = () => {
   const [customerName, setCustomerName] = useState('');
@@ -24,7 +24,7 @@ const CreateTicket = () => {
     const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
 
     try {
-      // Yahan "yahan_apna_cloud_name_likho" ko badalkar apna actual cloud name daalna hai
+      // Tera exact cloud name 'dn8xnitiw' use ho raha hai
       const res = await fetch(`https://api.cloudinary.com/v1_1/dn8xnitiw/${resourceType}/upload`, {
         method: "POST",
         body: data
@@ -57,7 +57,8 @@ const CreateTicket = () => {
         media_type: mediaData.type
       };
 
-      const res = await axios.post('http://localhost:5000/api/tickets', payload);
+      // Change 2: Hardcoded string hata kar custom axios instance use kiya
+      const res = await API.post('/tickets', payload);
       setMessage(`Ticket generated successfully! ID: ${res.data.ticket_id}`);
       
       // Reset Form

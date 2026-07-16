@@ -1,11 +1,12 @@
 const sendEmail = async (toEmail, toName, subject, htmlContent, ticketId = null) => {
   try {
-    // Local development me frontend port 5173 hai
+    // FRONTEND_URL environment variable se dynamic domain pick hoga
+    const frontendBaseUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    
     const trackingUrl = ticketId 
-      ? `http://localhost:5173/track?id=${ticketId}` 
-      : 'http://localhost:5173/track';
+      ? `${frontendBaseUrl}/track?id=${ticketId}` 
+      : `${frontendBaseUrl}/track`;
 
-    // Email template ke footer me sundar sa button/link add kar dete hain
     const footerHtml = ticketId ? `
       <br/><hr style="border:0;border-top:1px solid #eee;margin:20px 0;"/>
       <div style="text-align: center; margin-top: 20px;">
@@ -30,7 +31,7 @@ const sendEmail = async (toEmail, toName, subject, htmlContent, ticketId = null)
         sender: { name: "Datastraw CRM Support", email: process.env.SENDER_EMAIL },
         to: [{ email: toEmail, name: toName }],
         subject: subject,
-        htmlContent: `${htmlContent} ${footerHtml}` // Footer ko dynamic content ke sath attach kiya
+        htmlContent: `${htmlContent} ${footerHtml}`
       })
     });
     
@@ -41,4 +42,6 @@ const sendEmail = async (toEmail, toName, subject, htmlContent, ticketId = null)
   }
 };
 
-module.exports = { sendEmail };
+module.exports = {
+    sendEmail
+}

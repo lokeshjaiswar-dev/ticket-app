@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api'; // Change: Dynamic Axios Instance import kiya
 
 const TicketDetail = () => {
   const { id } = useParams();
@@ -13,7 +13,8 @@ const TicketDetail = () => {
   const fetchDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get(`http://localhost:5000/api/tickets/${id}`, {
+      // Change: Dynamic ticket detail fetch
+      const res = await API.get(`/tickets/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(res.data);
@@ -32,7 +33,8 @@ const TicketDetail = () => {
     setUpdating(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/tickets/${id}`, {
+      // Change: Dynamic ticket update request
+      await API.put(`/tickets/${id}`, {
         status: status,
         notes: note
       }, {

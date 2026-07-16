@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import API from '../api'; // Change: Dynamic Axios Instance import kiya
 
 const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
@@ -12,7 +12,9 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const statusParam = activeTab === 'All' ? '' : activeTab;
-      const res = await axios.get(`http://localhost:5000/api/tickets?status=${statusParam}&search=${search}`, {
+      
+      // Change: Dynamic Axios routing use ki
+      const res = await API.get(`/tickets?status=${statusParam}&search=${search}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTickets(res.data);
