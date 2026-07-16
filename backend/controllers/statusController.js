@@ -1,6 +1,5 @@
 const Status = require('../models/Status');
 
-// Seed status master if empty
 exports.seedStatuses = async (req, res) => {
   try {
     const defaults = [

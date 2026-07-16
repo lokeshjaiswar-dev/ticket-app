@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import API from '../api'; // Change 1: Humara centralized dynamic Axios instance
+import API from '../api'; 
 
 const CreateTicket = () => {
   const [customerName, setCustomerName] = useState('');
@@ -10,21 +10,18 @@ const CreateTicket = () => {
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
 
-  // 1. Cloudinary upload function jo tumhara Unsigned Preset use karega
   const uploadToCloudinary = async () => {
     if (!file) return { url: null, type: null };
     
     setUploading(true);
     const data = new FormData();
     data.append("file", file);
-    
-    // Hamara banaya hua preset name
+
     data.append("upload_preset", "datastraw_crm"); 
     
     const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
 
     try {
-      // Tera exact cloud name 'dn8xnitiw' use ho raha hai
       const res = await fetch(`https://api.cloudinary.com/v1_1/dn8xnitiw/${resourceType}/upload`, {
         method: "POST",
         body: data
@@ -39,10 +36,9 @@ const CreateTicket = () => {
     }
   };
 
-  // 2. Submit handler jo upload complete hone ke baad details backend ko bhejega
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formTarget = e.target; // Form element ka reference le liya
+    const formTarget = e.target; 
 
     try {
       let mediaData = { url: null, type: null };
@@ -59,18 +55,15 @@ const CreateTicket = () => {
         media_type: mediaData.type
       };
 
-      // Change 2: Hardcoded string hata kar custom axios instance use kiya
       const res = await API.post('/tickets', payload);
       setMessage(`Ticket generated successfully! ID: ${res.data.ticket_id}`);
-      
-      // ✅ React State Reset
+
       setCustomerName('');
       setCustomerEmail('');
       setSubject('');
       setDescription('');
       setFile(null);
 
-      // ✅ Visually clear file input (and other native fields)
       formTarget.reset(); 
 
     } catch (err) {

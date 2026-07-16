@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import API from '../api'; // Centralized Axios instance use kar rahe hain
+import API from '../api'; 
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const TrackTicket = () => {
@@ -11,7 +11,6 @@ const TrackTicket = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to search/track ticket using dynamic API configuration
   const fetchTicketDetails = async (idToTrack) => {
     setLoading(true);
     setError('');
@@ -19,7 +18,6 @@ const TrackTicket = () => {
     setNotes([]);
 
     try {
-      // Dynamic request: backend url api.js se inherit hoga
       const res = await API.get(`/tickets/${idToTrack.toUpperCase().trim()}`);
       setTicketData(res.data.ticket);
       setNotes(res.data.notes);
@@ -30,7 +28,6 @@ const TrackTicket = () => {
     }
   };
 
-  // URL query parameter (?id=TKT-XXXX) automatic detect karne ke liye
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const idFromUrl = params.get('id');
@@ -48,7 +45,6 @@ const TrackTicket = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4">
-      {/* Header Navigation */}
       <div className="w-full max-w-2xl flex justify-between mb-8">
         <button 
           onClick={() => navigate('/create-ticket')} 
@@ -68,7 +64,6 @@ const TrackTicket = () => {
         <h2 className="text-2xl font-bold text-slate-800 mb-2 text-center">Track Your Ticket</h2>
         <p className="text-slate-500 text-center text-sm mb-6">Enter your Ticket ID to view real-time status and remarks</p>
 
-        {/* Search Form */}
         <form onSubmit={handleTrackSubmit} className="flex gap-2 mb-8">
           <input 
             type="text" 
@@ -93,7 +88,6 @@ const TrackTicket = () => {
           </div>
         )}
 
-        {/* Ticket Details Panel */}
         {ticketData && (
           <div className="space-y-6 border-t border-slate-100 pt-6">
             <div className="flex justify-between items-start flex-wrap gap-2">
@@ -130,7 +124,6 @@ const TrackTicket = () => {
               </p>
             </div>
 
-            {/* Media Showcase */}
             {ticketData.media_url && (
               <div>
                 <p className="text-sm font-semibold text-slate-500 mb-2">Your Attachment:</p>
@@ -142,7 +135,6 @@ const TrackTicket = () => {
               </div>
             )}
 
-            {/* Admin Response/Notes */}
             <div>
               <p className="text-sm font-semibold text-slate-500 mb-2">Updates & Remarks from Support Team:</p>
               {notes.length === 0 ? (

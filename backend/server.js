@@ -8,19 +8,15 @@ const statusRoutes = require('./routes/statusRoutes');
 
 const app = express();
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
 connectDB();
 
-// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tickets', ticketRoutes);
 app.use('/api/status', statusRoutes);
 
-// Base route
 app.get('/', (req, res) => {
   res.send('Datastraw CRM API is running...');
 });

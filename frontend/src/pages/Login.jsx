@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../api'; // Change: Dynamic Axios Instance import kiya
+import API from '../api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +11,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Change: Dynamic Auth routing
       const res = await API.post('/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
       navigate('/dashboard');

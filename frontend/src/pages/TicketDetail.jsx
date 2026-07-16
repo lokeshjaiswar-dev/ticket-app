@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import API from '../api'; // Change: Dynamic Axios Instance import kiya
+import API from '../api';
 
 const TicketDetail = () => {
   const { id } = useParams();
@@ -13,7 +13,6 @@ const TicketDetail = () => {
   const fetchDetails = async () => {
     try {
       const token = localStorage.getItem('token');
-      // Change: Dynamic ticket detail fetch
       const res = await API.get(`/tickets/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -33,7 +32,6 @@ const TicketDetail = () => {
     setUpdating(true);
     try {
       const token = localStorage.getItem('token');
-      // Change: Dynamic ticket update request
       await API.put(`/tickets/${id}`, {
         status: status,
         notes: note
@@ -61,7 +59,6 @@ const TicketDetail = () => {
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Main Details */}
           <div className="md:col-span-2 space-y-6">
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
               <div className="flex justify-between items-start mb-4">
@@ -89,7 +86,6 @@ const TicketDetail = () => {
               </div>
             </div>
 
-            {/* Notes Section */}
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
               <h3 className="font-bold text-slate-800 mb-4">Replies & Notes Activity</h3>
               <div className="space-y-4">
@@ -107,7 +103,6 @@ const TicketDetail = () => {
             </div>
           </div>
 
-          {/* Configuration sidebar */}
           <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 h-fit space-y-6">
             <div>
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Customer Info</h4>

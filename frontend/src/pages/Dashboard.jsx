@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import API from '../api'; // Change: Dynamic Axios Instance import kiya
+import API from '../api'; 
 
 const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
@@ -12,8 +12,7 @@ const Dashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const statusParam = activeTab === 'All' ? '' : activeTab;
-      
-      // Change: Dynamic Axios routing use ki
+
       const res = await API.get(`/tickets?status=${statusParam}&search=${search}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -43,7 +42,6 @@ const Dashboard = () => {
 
       <main className="max-w-6xl mx-auto py-8 px-4 sm:px-6">
         <div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-8">
-          {/* Tabs */}
           <div className="flex border border-slate-200 bg-white rounded-xl p-1 shadow-sm">
             {['All', 'Open', 'In Progress', 'Closed'].map((tab) => (
               <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition ${activeTab === tab ? 'bg-blue-600 text-white' : 'text-slate-500 hover:text-slate-800'}`}>
@@ -52,7 +50,6 @@ const Dashboard = () => {
             ))}
           </div>
 
-          {/* Search */}
           <input type="text" placeholder="Search customer, ID or title..." className="w-full md:w-80 bg-white border border-slate-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
 

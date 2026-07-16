@@ -3,16 +3,13 @@ const Note = require('../models/Note');
 const Status = require('../models/Status');
 const { sendEmail } = require('../utils/emailService');
 
-// Create Ticket
 exports.createTicket = async (req, res) => {
   try {
     const { customer_name, customer_email, subject, description, media_url, media_type } = req.body;
 
-    // Fetch dynamic 'OPEN' status from Status Master
     const defaultStatus = await Status.findOne({ code: 'OPEN' });
     if (!defaultStatus) return res.status(500).json({ message: 'Default status not found' });
 
-    // Auto-generate ticket ID (TKT-XXXX)
     const count = await Ticket.countDocuments();
     const ticket_id = `TKT-${1000 + count + 1}`;
 
@@ -29,7 +26,6 @@ exports.createTicket = async (req, res) => {
 
     await newTicket.save();
 
-// Is block ko search karke replace kar do:
 await sendEmail(
   customer_email,
   customer_name,
@@ -39,7 +35,7 @@ await sendEmail(
    <p><b>Ticket ID:</b> ${ticket_id}</p>
    <p><b>Subject:</b> ${subject}</p>
    <p>We are reviewing your request and will get back to you soon.</p>`,
-  ticket_id // <-- Ticket ID yahan pass kar diya
+  ticket_id 
 );
 
     res.status(201).json(newTicket);
@@ -48,7 +44,6 @@ await sendEmail(
   }
 };
 
-// Get All Tickets (with search & status filters)
 exports.getTickets = async (req, res) => {
   try {
     const { status, search } = req.query;
@@ -75,7 +70,6 @@ exports.getTickets = async (req, res) => {
   }
 };
 
-// Get Single Ticket with linked Notes
 exports.getTicketDetails = async (req, res) => {
   try {
     const ticket = await Ticket.findOne({ ticket_id: req.params.ticket_id }).populate('status');
@@ -88,7 +82,6 @@ exports.getTicketDetails = async (req, res) => {
   }
 };
 
-// Update Ticket (Status or adding notes)
 exports.updateTicket = async (req, res) => {
   try {
     const { status, notes } = req.body;
@@ -98,7 +91,6 @@ exports.updateTicket = async (req, res) => {
     let statusUpdated = false;
     let noteAdded = false;
 
-    // Handle Status Update
     if (status) {
       const nextStatus = await Status.findOne({ code: status.toUpperCase() });
       if (nextStatus) {
@@ -108,17 +100,14 @@ exports.updateTicket = async (req, res) => {
       }
     }
 
-    // Handle Note Creation
     if (notes) {
       const newNote = new Note({ ticket_id: ticket._id, note_text: notes });
       await newNote.save();
       noteAdded = true;
     }
 
-    // Get updated status details to send in email
     const currentTicket = await Ticket.findOne({ ticket_id: req.params.ticket_id }).populate('status');
 
-// Is block ko search karke replace kar do:
 if (statusUpdated || noteAdded) {
   await sendEmail(
     ticket.customer_email,
@@ -128,7 +117,7 @@ if (statusUpdated || noteAdded) {
      <p>Your ticket <b>${ticket.ticket_id}</b> has been updated by our team.</p>
      <p><b>Current Status:</b> ${currentTicket.status.label}</p>
      ${notes ? `<p><b>New Remark:</b> ${notes}</p>` : ''}`,
-    ticket.ticket_id // <-- Ticket ID yahan bhi pass kar diya
+    ticket.ticket_id 
   );
 }
 

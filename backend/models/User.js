@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true }
 }, { timestamps: true });
 
-// Pre-save middleware to hash dynamic passwords
 UserSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   
