@@ -20,19 +20,23 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 border border-slate-100">
-        <h2 className="text-2xl font-bold text-center text-slate-800 mb-2">Datastraw CRM Login</h2>
-        <p className="text-slate-500 text-center text-sm mb-6">Enter details to access administration dashboard</p>
+    <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] px-4 selection:bg-slate-200">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-[0_4px_25px_rgba(15,23,42,0.02)] p-8 border border-slate-100">
+        <h2 className="text-xl font-semibold text-center text-slate-900 tracking-tight">Datastraw CRM</h2>
+        <p className="text-slate-400 text-center text-[10px] mt-1 mb-6 uppercase tracking-wider font-bold">Internal Administrator Access</p>
         
-        {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm mb-4 border border-red-100">{error}</div>}
+        {error && (
+          <div className="bg-rose-50 text-rose-600 p-3.5 rounded-xl text-xs font-medium mb-4 border border-rose-100 text-center">
+            {error}
+          </div>
+        )}
         
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-slate-600 mb-1">Email</label>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Email Address</label>
             <input 
               type="email" 
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-slate-400 focus:bg-white transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@datastraw.com"
@@ -40,25 +44,25 @@ const Login = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-slate-600 mb-1">Password</label>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Password</label>
             <input 
               type="password" 
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-slate-400 focus:bg-white transition"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required 
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+          <button type="submit" className="w-full bg-slate-900 text-white py-2.5 rounded-xl text-sm font-medium hover:bg-slate-800 transition active:scale-[0.99]">
             Sign In
           </button>
         </form>
 
-        <div className="mt-6 p-4 bg-blue-50/50 border border-blue-100 rounded-lg">
-          <p className="text-xs font-semibold text-blue-800 uppercase mb-1">Demo Credentials:</p>
-          <p className="text-xs text-slate-600">Email: <span className="font-mono bg-white px-1 py-0.5 rounded border border-slate-200">admin@datastraw.com</span></p>
-          <p className="text-xs text-slate-600 mt-1">Password: <span className="font-mono bg-white px-1 py-0.5 rounded border border-slate-200">admin123</span></p>
+        <div className="mt-6 p-4 bg-slate-50 border border-slate-200/60 rounded-xl">
+          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">System Demo Access</p>
+          <p className="text-xs text-slate-600">Email: <span className="font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200/80 font-bold">admin@datastraw.com</span></p>
+          <p className="text-xs text-slate-600 mt-1.5">Pass: <span className="font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200/80 font-bold">admin123</span></p>
         </div>
       </div>
     </div>

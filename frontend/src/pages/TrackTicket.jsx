@@ -44,31 +44,31 @@ const TrackTicket = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4">
-      <div className="w-full max-w-2xl flex justify-between mb-8">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center py-16 px-4 selection:bg-slate-200">
+      <div className="w-full max-w-2xl flex justify-between items-center mb-6 px-1">
         <button 
           onClick={() => navigate('/create-ticket')} 
-          className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition"
+          className="text-xs font-semibold text-slate-500 hover:text-slate-800 tracking-wide uppercase transition"
         >
-          ← Create New Ticket
+          &larr; Create Ticket
         </button>
         <button 
           onClick={() => navigate('/login')} 
-          className="text-sm font-semibold text-slate-500 hover:text-slate-800 transition"
+          className="text-xs font-semibold text-slate-500 hover:text-slate-800 tracking-wide uppercase transition"
         >
           Agent Login
         </button>
       </div>
 
-      <div className="w-full max-w-2xl bg-white rounded-xl shadow-lg border border-slate-100 p-8">
-        <h2 className="text-2xl font-bold text-slate-800 mb-2 text-center">Track Your Ticket</h2>
-        <p className="text-slate-500 text-center text-sm mb-6">Enter your Ticket ID to view real-time status and remarks</p>
+      <div className="w-full max-w-2xl bg-white rounded-2xl border border-slate-200/80 p-8 shadow-sm">
+        <h2 className="text-xl font-semibold text-slate-900 tracking-tight text-center">Track Status</h2>
+        <p className="text-slate-400 text-center text-xs mt-1 mb-8">Get live updates on your reported issue</p>
 
-        <form onSubmit={handleTrackSubmit} className="flex gap-2 mb-8">
+        <form onSubmit={handleTrackSubmit} className="flex gap-2.5 mb-8">
           <input 
             type="text" 
-            placeholder="e.g., TKT-1001" 
-            className="flex-1 px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 uppercase"
+            placeholder="Enter Ticket ID (e.g. TKT-1001)" 
+            className="flex-1 px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-slate-400 focus:bg-white uppercase tracking-wider transition"
             value={ticketId}
             onChange={(e) => setTicketId(e.target.value)}
             required
@@ -76,29 +76,29 @@ const TrackTicket = () => {
           <button 
             type="submit" 
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition disabled:bg-blue-400"
+            className="bg-slate-900 hover:bg-slate-800 text-white text-sm px-6 py-2.5 rounded-xl font-medium transition active:scale-[0.98] disabled:bg-slate-300"
           >
             {loading ? 'Searching...' : 'Track'}
           </button>
         </form>
 
         {error && (
-          <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100 mb-6 text-center">
+          <div className="p-4 bg-rose-50 text-rose-600 rounded-xl text-xs font-medium border border-rose-100 text-center mb-6">
             {error}
           </div>
         )}
 
         {ticketData && (
-          <div className="space-y-6 border-t border-slate-100 pt-6">
-            <div className="flex justify-between items-start flex-wrap gap-2">
+          <div className="space-y-6 pt-6 border-t border-slate-100">
+            <div className="flex justify-between items-start flex-wrap gap-4">
               <div>
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Ticket ID</span>
-                <h3 className="text-xl font-bold text-slate-800">{ticketData.ticket_id}</h3>
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">REFERENCE</span>
+                <h3 className="text-base font-semibold text-slate-900 font-mono">{ticketData.ticket_id}</h3>
               </div>
-              <div className="text-right">
-                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">Status</span>
+              <div>
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1 text-right">CURRENT STATUS</span>
                 <span 
-                  className="inline-block px-3 py-1 rounded-full text-xs font-semibold text-white mt-1"
+                  className="inline-block px-3 py-1 rounded-full text-[11px] font-semibold text-white tracking-wide"
                   style={{ backgroundColor: ticketData.status.color }}
                 >
                   {ticketData.status.label}
@@ -106,48 +106,50 @@ const TrackTicket = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-lg text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 border border-slate-100 p-4 rounded-xl text-xs">
               <div>
-                <p className="text-slate-500 font-semibold">Subject:</p>
-                <p className="text-slate-800 font-medium">{ticketData.subject}</p>
+                <p className="text-slate-400 font-medium uppercase tracking-wider mb-1">Subject</p>
+                <p className="text-slate-800 font-semibold text-sm">{ticketData.subject}</p>
               </div>
               <div>
-                <p className="text-slate-500 font-semibold">Submitted On:</p>
-                <p className="text-slate-800">{new Date(ticketData.createdAt).toLocaleString()}</p>
+                <p className="text-slate-400 font-medium uppercase tracking-wider mb-1">Created At</p>
+                <p className="text-slate-800 text-sm">{new Date(ticketData.createdAt).toLocaleString()}</p>
               </div>
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-slate-500 mb-1">Issue Description:</p>
-              <p className="text-slate-700 bg-slate-50 p-4 rounded-lg text-sm border border-slate-100 whitespace-pre-wrap">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">Reported Case Details</p>
+              <div className="text-slate-700 bg-slate-50/50 p-4 rounded-xl text-sm border border-slate-100 whitespace-pre-wrap leading-relaxed">
                 {ticketData.description}
-              </p>
+              </div>
             </div>
 
             {ticketData.media_url && (
               <div>
-                <p className="text-sm font-semibold text-slate-500 mb-2">Your Attachment:</p>
-                {ticketData.media_type === 'image' ? (
-                  <img src={ticketData.media_url} alt="Attachment" className="max-h-60 rounded-lg border border-slate-200 object-contain bg-slate-50" />
-                ) : (
-                  <video src={ticketData.media_url} controls className="max-h-60 rounded-lg border border-slate-200 object-contain bg-slate-50" />
-                )}
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Attached Media File</p>
+                <div className="rounded-xl overflow-hidden border border-slate-200 max-h-72 flex items-center justify-center bg-slate-50">
+                  {ticketData.media_type === 'image' ? (
+                    <img src={ticketData.media_url} alt="Attachment" className="max-h-72 w-full object-contain" />
+                  ) : (
+                    <video src={ticketData.media_url} controls className="max-h-72 w-full object-contain" />
+                  )}
+                </div>
               </div>
             )}
 
-            <div>
-              <p className="text-sm font-semibold text-slate-500 mb-2">Updates & Remarks from Support Team:</p>
+            <div className="pt-2">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">Resolution Timeline & Agent Logs</p>
               {notes.length === 0 ? (
-                <p className="text-xs text-slate-400 italic bg-slate-50 p-3 rounded-lg text-center">
-                  No remarks added yet. The support team is currently reviewing your ticket.
+                <p className="text-xs text-slate-400 italic bg-slate-50 border border-slate-150 p-4 rounded-xl text-center">
+                  Our system shows no logs yet. Your ticket will be reviewed soon.
                 </p>
               ) : (
                 <div className="space-y-3">
                   {notes.map((note) => (
-                    <div key={note._id} className="bg-blue-50/50 border border-blue-100 p-3.5 rounded-lg text-sm">
-                      <p className="text-slate-700 font-medium">{note.note_text}</p>
-                      <span className="text-[10px] text-slate-400 block mt-1.5">
-                        Updated on: {new Date(note.createdAt).toLocaleString()}
+                    <div key={note._id} className="bg-slate-50 border border-slate-100 p-4 rounded-xl">
+                      <p className="text-slate-700 text-sm leading-relaxed">{note.note_text}</p>
+                      <span className="text-[10px] text-slate-400 font-medium block mt-2">
+                        Logged on: {new Date(note.createdAt).toLocaleString()}
                       </span>
                     </div>
                   ))}
