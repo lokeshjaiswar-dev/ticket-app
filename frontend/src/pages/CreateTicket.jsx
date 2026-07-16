@@ -42,6 +42,8 @@ const CreateTicket = () => {
   // 2. Submit handler jo upload complete hone ke baad details backend ko bhejega
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formTarget = e.target; // Form element ka reference le liya
+
     try {
       let mediaData = { url: null, type: null };
       if (file) {
@@ -61,12 +63,16 @@ const CreateTicket = () => {
       const res = await API.post('/tickets', payload);
       setMessage(`Ticket generated successfully! ID: ${res.data.ticket_id}`);
       
-      // Reset Form
+      // ✅ React State Reset
       setCustomerName('');
       setCustomerEmail('');
       setSubject('');
       setDescription('');
       setFile(null);
+
+      // ✅ Visually clear file input (and other native fields)
+      formTarget.reset(); 
+
     } catch (err) {
       setMessage(err.response?.data?.message || 'Something went wrong');
     }
