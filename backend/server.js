@@ -15,6 +15,11 @@ app.use(express.json());
 // Database Connection
 connectDB();
 
+// Base route ko thoda badal do
+app.get('/', (req, res) => {
+  res.send('Bhai, ye mera he code chal rha hai! Verification success.');
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/tickets', ticketRoutes);
