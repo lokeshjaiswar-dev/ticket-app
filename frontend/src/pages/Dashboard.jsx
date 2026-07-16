@@ -11,7 +11,12 @@ const Dashboard = () => {
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      const statusParam = activeTab === 'All' ? '' : activeTab;
+      
+      // Mapping exact string with status identifiers 
+      let statusParam = '';
+      if (activeTab === 'Open') statusParam = 'OPEN';
+      else if (activeTab === 'In Progress') statusParam = 'IN_PROGRESS';
+      else if (activeTab === 'Closed') statusParam = 'CLOSED';
 
       const res = await API.get(`/tickets?status=${statusParam}&search=${search}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -33,7 +38,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center selection:bg-slate-200">
-      {/* Header Container - Same vertical column column width alignment */}
+      {/* Header Container - Max width vertical alignment */}
       <header className="w-full max-w-7xl bg-white border-b border-slate-200/80 py-4 px-4 sm:px-6 flex justify-between items-center">
         <div>
           <h1 className="text-base font-semibold text-slate-900 tracking-tight">Datastraw CRM</h1>
@@ -44,12 +49,16 @@ const Dashboard = () => {
         </button>
       </header>
 
-      {/* Main Content Container - Matches exact header structural width */}
+      {/* Main Content Container - Aligns with Header */}
       <main className="w-full max-w-7xl py-10 px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6">
           <div className="flex border border-slate-200/60 bg-white rounded-xl p-1 shadow-sm w-full sm:w-auto overflow-x-auto">
             {['All', 'Open', 'In Progress', 'Closed'].map((tab) => (
-              <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${activeTab === tab ? 'bg-slate-900 text-white' : 'text-slate-400 hover:text-slate-800'}`}>
+              <button 
+                key={tab} 
+                onClick={() => setActiveTab(tab)} 
+                className={`px-4 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${activeTab === tab ? 'bg-slate-900 text-white' : 'text-slate-400 hover:text-slate-800'}`}
+              >
                 {tab}
               </button>
             ))}
