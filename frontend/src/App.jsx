@@ -11,7 +11,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Default redirect to Track / Create Ticket */}
         <Route path="/" element={<Navigate to="/track" replace />} />
 
         {/* Public Routes */}
