@@ -48,7 +48,6 @@ const Dashboard = () => {
         </button>
       </header>
 
-      {/* Main Content Container - Aligns with Header */}
       <main className="w-full max-w-7xl py-10 px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6">
           <div className="flex border border-slate-200/60 bg-white rounded-xl p-1 shadow-sm w-full sm:w-auto overflow-x-auto">
