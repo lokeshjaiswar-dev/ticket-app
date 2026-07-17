@@ -38,7 +38,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center selection:bg-slate-200">
-      {/* Header Container - Max width vertical alignment */}
       <header className="w-full max-w-7xl bg-white border-b border-slate-200/80 py-4 px-4 sm:px-6 flex justify-between items-center">
         <div>
           <h1 className="text-base font-semibold text-slate-900 tracking-tight">Datastraw CRM</h1>

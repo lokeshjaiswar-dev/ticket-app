@@ -15,9 +15,8 @@ function App() {
 
         <Route path="/login" element={<Login />} />
         <Route path="/create-ticket" element={<CreateTicket />} />
-        <Route path="/track" element={<TrackTicket />} /> {/* Naya Route */}
+        <Route path="/track" element={<TrackTicket />} /> 
 
-        {/* Protected Routes (Admin Panel) */}
         <Route 
           path="/dashboard" 
           element={
