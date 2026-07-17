@@ -74,6 +74,7 @@ const sendEmail = async (toEmail, toName, subject, htmlContent, ticketId = null)
   }
 };
 
+
 module.exports = {
     sendEmail
 }
