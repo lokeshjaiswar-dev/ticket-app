@@ -13,7 +13,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/track" replace />} />
 
-        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/create-ticket" element={<CreateTicket />} />
         <Route path="/track" element={<TrackTicket />} /> {/* Naya Route */}
