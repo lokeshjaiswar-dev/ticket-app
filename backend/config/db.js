@@ -11,7 +11,7 @@ const connectDB = async () => {
 };
 
 function sayHi(){
-  consol
+  cons
 
 
 module.exports = connectDB;
