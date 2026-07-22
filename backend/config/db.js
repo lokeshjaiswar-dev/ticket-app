@@ -11,7 +11,7 @@ const connectDB = async () => {
 };
 
 function sayHi(){
-  console.log("Hiii")
+  console.log("Hiii
 
 
 module.exports = connectDB;
