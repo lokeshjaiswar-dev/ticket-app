@@ -10,4 +10,8 @@ const connectDB = async () => {
   }
 };
 
+function sayHi(){
+  console.log("Hiii")
+}
+
 module.exports = connectDB;
