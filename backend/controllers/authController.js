@@ -7,7 +7,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     let user = await User.findOne({ email });
-    if (!user && email === 'admin@datastraw.com' && password === 'admin123 lokesh jaiswar') {
+    if (!user && email === 'admin@datastraw.com' && password === 'admin123 lokesh jaiswa') {
       user = new User({ name: 'Admin User', email, password });
       await user.save();
     }
