@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     }
 
     if(!lokesh){
-      console.log(" how are outaf afa  
+      console.log(" how are outaf   
     
 
     if (!user) {
