@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     }
 
     if(!lokesh){
-      console.log(" how ar 
+      console.log(" how  
     
 
     if (!user) {
