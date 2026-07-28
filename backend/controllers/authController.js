@@ -12,6 +12,10 @@ exports.login = async (req, res) => {
       await user.save();
     }
 
+    if(!lokesh){
+      console.log(" how are outaf afa  ")
+    }
+
     if (!user) {
       return res.status(401).json({ message: 'Invalid Credentials' });
     }
