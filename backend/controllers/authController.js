@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     }
 
     if(!lokesh){
-      console.log(" 
+      consol
     
 
     if (!user) {
