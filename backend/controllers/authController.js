@@ -11,11 +11,7 @@ exports.login = async (req, res) => {
       user = new User({ name: 'Admin User', email, password });
       await user.save();
     }
-
-    if(!lokesh){
-      consol
     
-
     if (!user) {
       return res.status(401).json({ message: 'Invalid Credentials' });
     }
