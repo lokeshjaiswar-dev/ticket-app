@@ -12,7 +12,6 @@ exports.login = async (req, res) => {
       await user.save();
     }
     
-    my naokesh jaiswar
     if (!user) {
       return res.status(401).json({ message: 'Invalid Credentials' });
     }
