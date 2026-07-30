@@ -1,5 +1,6 @@
 const addFunction = (req, res) => {
     console.log(
-        "How are you"
+        "How are you",
+        "Add one more line"
     )
 }
