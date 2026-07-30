@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
       user = new User({ name: 'Admin User', email, password });
       await user.save();
     }
-    
+    console.log("check 1")
     if (!user) {
       return res.status(401).json({ message: 'Invalid Credentials' });
     }
