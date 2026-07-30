@@ -17,3 +17,7 @@ const updateFunction = (req,res) => {
 const addFunction = function(){
     console.log("My name is add function")
 }
+
+const updateSIngleFUnction = () => {
+    console.log("My work is to update")
+}
