@@ -13,3 +13,7 @@ const removeFunction = (req, res) => {
 const updateFunction = (req,res) => {
     console.log("My name is update function")
 }
+
+const addFunction = function(){
+    console.log("My name is add function")
+}
