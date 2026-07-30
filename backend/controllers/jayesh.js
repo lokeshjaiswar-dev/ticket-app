@@ -5,3 +5,7 @@ const addFunction = (req, res) => {
         "delete this line"
     )
 }
+
+const removeFunction = (req, res) => {
+    
+}
