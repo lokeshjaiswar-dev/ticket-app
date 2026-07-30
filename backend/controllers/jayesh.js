@@ -7,5 +7,5 @@ const addFunction = (req, res) => {
 }
 
 const removeFunction = (req, res) => {
-    
+    console.log("How are you")
 }
