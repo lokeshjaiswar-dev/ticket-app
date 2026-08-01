@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     }
 
     function printMe(){
-      console.log("M")
+      
     }
     
     if (!user) {
