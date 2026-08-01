@@ -12,7 +12,9 @@ exports.login = async (req, res) => {
       await user.save();
     }
 
-    function printMe(){}
+    function printMe(){
+      console.log(first)
+    }
     
     if (!user) {
       return res.status(401).json({ message: 'Invalid Credentials' });
