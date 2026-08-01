@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     }
 
     function printMe(){
-      console.log(first)
+      console.log("My name is lokesh")
     }
     
     if (!user) {
