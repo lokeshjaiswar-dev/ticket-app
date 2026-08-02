@@ -12,11 +12,6 @@ exports.login = async (req, res) => {
       await user.save();
     }
 
-
-    function sayHii(){
-      console.log("My name is lokesh")
-    }
-
     if (!user) {
       return res.status(401).json({ message: 'Invalid Credentials' });
     }
